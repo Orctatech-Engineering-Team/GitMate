@@ -3,7 +3,7 @@ Copyright © 2025 Bernard Katamanso <bernard@orctatech.com>
 */
 package main
 
-import "GitMate/cmd"
+import "github.com/Orctatech-Engineering-Team/GitMate/cmd"
 
 func main() {
 	cmd.Execute()

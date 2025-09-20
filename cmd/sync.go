@@ -4,7 +4,7 @@ Copyright © 2025 Bernard Katamanso <bernard@orctatech.com>
 package cmd
 
 import (
-	"GitMate/internal/tui"
+	"github.com/Orctatech-Engineering-Team/GitMate/internal/tui"
 	"github.com/spf13/cobra"
 )
 

@@ -6,7 +6,7 @@ package tui
 import (
 	"context"
 
-	"GitMate/internal/git"
+	"github.com/Orctatech-Engineering-Team/GitMate/internal/git"
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"
 )

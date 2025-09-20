@@ -4,7 +4,7 @@ Copyright © 2025 Bernard Katamanso <bernard@orctatech.com>
 package tui
 
 import (
-	"GitMate/internal/git"
+	"github.com/Orctatech-Engineering-Team/GitMate/internal/git"
 	tea "github.com/charmbracelet/bubbletea"
 )
 

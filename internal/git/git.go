@@ -74,7 +74,7 @@ func GitStatusPorcelain(dir string) ([]FileStatus, error) {
 // It returns a slice of FileStatus preserving Index/Worktree status and path(s).
 //
 // Format (per-line):
-// XY <path>          (for regular)
+// XY <path> (for regular)
 // XY <from> -> <to>  (for rename/copy)
 // We split the line into the 2-status chars then the rest after a single space.
 func ParsePorcelain(out string) []FileStatus {
@@ -177,7 +177,7 @@ func Fetch(dir string) error {
 	return nil
 }
 
-// Rebase runs `git rebase origin/main`
+// RebaseOntoMain Rebase runs `git rebase origin/main`
 func RebaseOntoMain(dir string) error {
 	ctx := context.Background()
 	_, err := RunCombined(ctx, dir, "rebase", "origin/main")
@@ -256,4 +256,15 @@ func RunGitWithOutput(ctx context.Context, args ...string) (<-chan string, <-cha
 	}()
 
 	return outCh, errCh
+}
+
+// IsDirty checks if there are any uncommitted changes in the repo.
+// Returns true if there are staged or unstaged changes.
+func IsDirty(dir string) (bool, error) {
+	ctx := context.Background()
+	out, err := RunCombined(ctx, dir, "status", "--porcelain")
+	if err != nil {
+		return false, err
+	}
+	return strings.TrimSpace(out) != "", nil
 }

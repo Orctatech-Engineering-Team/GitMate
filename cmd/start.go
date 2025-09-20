@@ -5,9 +5,6 @@ package cmd
 
 import (
 	"github.com/Orctatech-Engineering-Team/GitMate/internal/tui"
-	tea "github.com/charmbracelet/bubbletea"
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,11 +13,11 @@ var startCmd = &cobra.Command{
 	Use:   "start",
 	Short: "Start a new feature branch workflow",
 	Long:  ` This command will start a new workflow.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		p := tea.NewProgram(tui.NewModel(tui.CmdStart)) // pass initial command
-		if err, _ := p.Run(); err != nil {
-			log.Fatal(err)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if len(args) == 0 {
+			return tui.RunStartTUI("")
 		}
+		return tui.RunStartTUI(args[0])
 	},
 }
 

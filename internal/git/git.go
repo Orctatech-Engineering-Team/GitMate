@@ -99,7 +99,7 @@ func ParsePorcelain(out string) []FileStatus {
 		}
 		fs.IndexStatus = ln[0]
 		fs.WorktreeStatus = ln[1]
-		rest := strings.TrimSpace(ln[3:]) // skip "XY " (2 chars + single space)
+		rest := strings.TrimSpace(ln[3:]) // skip "XY" (2 chars + single space)
 		fs.Path = rest
 		// check rename pattern "from -> to"
 		if idx := strings.Index(rest, "->"); idx != -1 {

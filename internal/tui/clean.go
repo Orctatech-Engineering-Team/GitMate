@@ -28,7 +28,7 @@ func NewConfirmModel() confirmModel {
 		listItem("Yes, run autosquash rebase"),
 		listItem("No, cancel"),
 	}
-	l := list.New(items, list.NewDefaultDelegate(), 40, 6)
+	l := list.New(items, list.NewDefaultDelegate(), 100, 10)
 	l.Title = "Noisy commits detected. Run 'git rebase -i --autosquash'?"
 	return confirmModel{list: l}
 }

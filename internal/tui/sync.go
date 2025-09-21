@@ -8,30 +8,28 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-type syncModel struct {
+type SyncModel struct {
 	spinner spinner.Model
 	logs    []string
 	err     error
 	done    bool
 }
 
-// --- constructor
-func NewSyncModel() syncModel {
+// NewSyncModel Creates a new syncModel
+func NewSyncModel() SyncModel {
 	s := spinner.New()
 	s.Spinner = spinner.Dot
-	return syncModel{
+	return SyncModel{
 		spinner: s,
 		logs:    []string{},
 	}
 }
 
-// --- Init
-func (m syncModel) Init() tea.Cmd {
+func (m SyncModel) Init() tea.Cmd {
 	return m.spinner.Tick
 }
 
-// --- Update
-func (m syncModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m SyncModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if msg.String() == "q" || msg.String() == "ctrl+c" {
@@ -63,7 +61,7 @@ func (m syncModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 // --- View
-func (m syncModel) View() string {
+func (m SyncModel) View() string {
 	s := "GitMate: Syncing with main\n\n"
 	if m.err != nil {
 		s += "Error: " + m.err.Error() + "\n"
@@ -100,10 +98,9 @@ func runSync(p *tea.Program) {
 	})
 }
 
-// --- Entry point for this TUI
 func RunSyncTUI() error {
 	p := tea.NewProgram(NewSyncModel())
-	// start orchestration after program begins
+	// start orchestration after the program begins
 	go runSync(p)
 	_, err := p.Run()
 	return err

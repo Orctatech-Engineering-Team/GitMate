@@ -11,6 +11,11 @@ type gitLineMsg string
 type gitErrMsg error
 type gitDoneMsg struct{}
 
+type confirmMsg bool
+type tutorMsg string
+type tutorErrMsg error
+type tutorDoneMsg struct{}
+
 // streamStep runs a git command, streams logs/errors into Update, then calls next if success
 func streamStep(p *tea.Program, cmd string, args []string, next func()) {
 	ctx := context.Background()

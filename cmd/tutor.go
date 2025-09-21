@@ -5,9 +5,6 @@ package cmd
 
 import (
 	"github.com/Orctatech-Engineering-Team/GitMate/internal/tui"
-	tea "github.com/charmbracelet/bubbletea"
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,11 +13,8 @@ var tutorCmd = &cobra.Command{
 	Use:   "tutor",
 	Short: "Interactive tutorial for Git workflows",
 	Long:  `This command will guide you through the basics of Git workflows.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		p := tea.NewProgram(tui.NewModel(tui.CmdClean))
-		if err, _ := p.Run(); err != nil {
-			log.Fatal(err)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return tui.RunCleanTUI()
 	},
 }
 

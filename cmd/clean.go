@@ -5,9 +5,6 @@ package cmd
 
 import (
 	"github.com/Orctatech-Engineering-Team/GitMate/internal/tui"
-	tea "github.com/charmbracelet/bubbletea"
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -16,11 +13,8 @@ var cleanCmd = &cobra.Command{
 	Use:   "clean",
 	Short: "Clean up commits interactively (squash/fixup)",
 	Long:  `This command will clean up commits interactively (squash/fixup).`,
-	Run: func(cmd *cobra.Command, args []string) {
-		p := tea.NewProgram(tui.NewModel(tui.CmdClean))
-		if err, _ := p.Run(); err != nil {
-			log.Fatal(err)
-		}
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return tui.RunCleanTUI()
 	},
 }
 

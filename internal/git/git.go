@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -267,4 +268,13 @@ func IsDirty(dir string) (bool, error) {
 		return false, err
 	}
 	return strings.TrimSpace(out) != "", nil
+}
+
+func IsRepo(dir string) (bool, error) {
+	// check for .git folder
+	_, err := os.Stat(dir + "/.git")
+	if err != nil {
+		return false, nil
+	}
+	return true, nil
 }

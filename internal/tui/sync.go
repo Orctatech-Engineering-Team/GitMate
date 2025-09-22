@@ -60,7 +60,6 @@ func (m SyncModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
-// --- View
 func (m SyncModel) View() string {
 	s := "GitMate: Syncing with main\n\n"
 	if m.err != nil {

@@ -25,13 +25,17 @@ type confirmModel struct {
 
 func NewConfirmModel() confirmModel {
 	items := []list.Item{
-		listItem("Yes, run autosquash rebase"),
-		listItem("No, cancel"),
+		listItem2("Yes, run autosquash rebase"),
+		listItem2("No, cancel"),
 	}
 	l := list.New(items, list.NewDefaultDelegate(), 100, 10)
 	l.Title = "Noisy commits detected. Run 'git rebase -i --autosquash'?"
 	return confirmModel{list: l}
 }
+
+type listItem2 string
+
+func (i listItem2) FilterValue() string { return string(i) }
 
 func (m confirmModel) Init() tea.Cmd { return nil }
 
@@ -40,14 +44,14 @@ func (m confirmModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "enter":
-			i, ok := m.list.SelectedItem().(listItem)
-			if ok {
-				if i == "Yes, run autosquash rebase" {
-					m.yes = true
-				}
-				m.done = true
-				return m, tea.Quit
-			}
+			//i, ok := m.list.SelectedItem().(listItem)
+			//if ok {
+			//	if i == listItem2("Yes, run autosquash rebase") {
+			//		m.yes = true
+			//	}
+			//	m.done = true
+			//	return m, tea.Quit
+			//}
 		case "q", "ctrl+c":
 			m.done = true
 			m.yes = false

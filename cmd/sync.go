@@ -13,12 +13,6 @@ var syncCmd = &cobra.Command{
 	Use:   "sync",
 	Short: "Sync your branch with main",
 	Long:  `This command will sync your branch with main.`,
-	//Run: func(cmd *cobra.Command, args []string) {
-	//	p := tea.NewProgram(tui.NewModel(tui.CmdClean))
-	//	if err, _ := p.Run(); err != nil {
-	//		log.Fatal(err)
-	//	}
-	//},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		return tui.RunSyncTUI()
 	},

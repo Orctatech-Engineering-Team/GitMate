@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/lipgloss"
 	"regexp"
 	"strings"
 
@@ -18,30 +19,41 @@ import (
 
 // ---------------- Prompt Model ----------------
 
-type promptChoice string
+const Desc = "Uncommitted changes detected. What do you want to do?"
 
-const (
-	choiceStash   promptChoice = "Stash changes"
-	choiceCommit  promptChoice = "Commit all changes"
-	choiceDiscard promptChoice = "Discard changes"
-	choiceQuit    promptChoice = "Quit"
+var (
+	choiceStash   = listItem{title: "Stash changes", desc: "Stash uncommitted changes"}
+	choiceCommit  = listItem{title: "Commit all changes", desc: "Stage & commit all changes"}
+	choiceDiscard = listItem{title: "Discard changes", desc: "Reset and discard changes"}
+	choiceQuit    = listItem{title: "Quit", desc: "Exit without doing anything"}
 )
 
 type promptModel struct {
 	list   list.Model
 	done   bool
-	choice promptChoice
+	choice listItem
 }
 
-func NewPromptModel() promptModel {
+func newPromptModel() promptModel {
+	// Delegate
+	d := list.NewDefaultDelegate()
+
+	// Change colors
+	c := lipgloss.Color("#6f03fc")
+	d.Styles.SelectedTitle = d.Styles.SelectedTitle.Foreground(c).BorderLeftForeground(c)
+	d.Styles.SelectedDesc = d.Styles.SelectedTitle // reuse title style
+
+	// Items
 	items := []list.Item{
-		listItem(choiceStash),
-		listItem(choiceCommit),
-		listItem(choiceDiscard),
-		listItem(choiceQuit),
+		choiceStash,
+		choiceCommit,
+		choiceDiscard,
+		choiceQuit,
 	}
-	l := list.New(items, list.NewDefaultDelegate(), 30, 10)
+
+	l := list.New(items, d, 80, 10)
 	l.Title = "Uncommitted changes detected. What do you want to do?"
+
 	return promptModel{list: l}
 }
 
@@ -54,7 +66,7 @@ func (m promptModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			i, ok := m.list.SelectedItem().(listItem)
 			if ok {
-				m.choice = promptChoice(i)
+				m.choice = i
 				m.done = true
 				return m, tea.Quit
 			}
@@ -73,12 +85,18 @@ func (m promptModel) View() string {
 	if m.done {
 		return fmt.Sprintf("Selected: %s\n", m.choice)
 	}
+	m.list.ShowHelp()
+	m.list.ShowFilter()
 	return m.list.View()
 }
 
-type listItem string
+type listItem struct {
+	title, desc string
+}
 
-func (i listItem) FilterValue() string { return string(i) }
+func (i listItem) FilterValue() string { return i.title }
+func (i listItem) Title() string       { return i.title }
+func (i listItem) Description() string { return i.desc }
 
 // ---------------- Branch Name Input Model ----------------
 
@@ -88,7 +106,7 @@ type branchInputModel struct {
 	branch    string
 }
 
-func NewBranchInputModel() branchInputModel {
+func newBranchInputModel() branchInputModel {
 	ti := textinput.New()
 	ti.Placeholder = "Enter feature branch name..."
 	ti.Focus()
@@ -134,7 +152,7 @@ type startModel struct {
 	branch  string
 }
 
-func NewStartModel(branch string) startModel {
+func newStartModel(branch string) startModel {
 	s := spinner.New()
 	s.Spinner = spinner.Dot
 	return startModel{
@@ -221,7 +239,7 @@ func runStart(p *tea.Program, branch string) {
 func RunStartTUI(featureName string) error {
 	// 1. Prompt for branch name if none provided
 	if featureName == "" {
-		tiProgram := tea.NewProgram(NewBranchInputModel())
+		tiProgram := tea.NewProgram(newBranchInputModel())
 		final, err := tiProgram.Run()
 		if err != nil {
 			return err
@@ -241,8 +259,7 @@ func RunStartTUI(featureName string) error {
 	}
 	if dirty {
 		// Run prompt for stash/commit/discard
-		pm := tea.NewProgram(NewPromptModel())
-		go runStart(pm, featureName)
+		pm := tea.NewProgram(newPromptModel())
 		final, err := pm.Run()
 		if err != nil {
 			return err
@@ -269,8 +286,8 @@ func RunStartTUI(featureName string) error {
 	}
 
 	// 3. Run main start model with live logs
-	p := tea.NewProgram(NewStartModel(featureName))
-	runStart(p, featureName)
+	p := tea.NewProgram(newStartModel(featureName))
+	go runStart(p, featureName) // start git orchestration in background
 	_, err = p.Run()
 	return err
 }

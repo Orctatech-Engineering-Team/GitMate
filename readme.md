@@ -1,36 +1,54 @@
-# GITMATE
-### 1. Identity & Purpose
+# **GitMate**
 
-* **Name**: GitMate
-* **Tagline**: *“Your friendly Git workflow companion.”*
-* **Core Purpose**: Help individuals and teams practice clean, disciplined Git workflows (rebasing, squashing, branching, PR prep) without confusion.
+> *“Your friendly Git workflow companion.”*
 
-### 2. Minimal First Version
+## **1. What Is GitMate?**
 
-* Teach (through prompts/explanations).
-* Guide (step-by-step workflows like squash or rebase).
-* Automate (run the actual Git commands when user confirms).
+**GitMate** helps you and your team practice clean, disciplined Git workflows — without getting lost in the commands.
+It teaches, guides, and automates common Git tasks like **rebasing**, **squashing**, and **branch prep** through a simple interactive CLI.
 
-Example:
+Whether you’re cleaning up a messy commit history or preparing for a pull request, GitMate keeps your workflow neat and understandable.
+
+## **2. Why GitMate?**
+
+Working with Git can be powerful — but sometimes confusing. GitMate exists to:
+
+* **Teach** best practices (rebasing vs. merging, when to squash, etc.)
+* **Guide** you through step-by-step actions.
+* **Automate** the final Git commands safely — only when you confirm.
+
+You learn as you go, while GitMate does the heavy lifting.
+
+## **3. Quick Example**
 
 ```bash
 gitmate squash
 ```
 
-→ Shows you your last commits, asks which to squash, explains why squashing matters, then executes.
+GitMate will:
 
-### 3. Roadmap (tiny steps for your ADHD flow)
+1. Show your recent commits.
+2. Ask which to squash (with a short explanation of why squashing matters).
+3. Execute the action when you confirm.
 
-1. **Setup project skeleton** with Bubble Tea.
-2. **Add one command**: `gitmate squash`.
-3. Test with your own repo.
-4. **Polish the UX** (clear prompts, colors, short explanations).
-5. Share with your team for feedback.
+Clean history, confident workflow.
 
-Later, we can add:
+## **4. Minimal First Version (MVP)**
 
-* `gitmate rebase` (guided flow).
-* `gitmate clean-branch`.
-* `gitmate prepare-pr`.
+* [x] Setup project skeleton (Bubble Tea).
+* [x] Add one command: `gitmate squash`.
+* [x] Test on local repo.
+* [x] Polish the UX (clear prompts, colors, concise explanations).
+* [ ] Share with team for feedback.
 
-Do you want me to draft the **exact step 1 setup (repo + bubble tea skeleton)** so you can immediately open your editor and start GitMate today?
+## **5. Roadmap (Coming Next)**
+
+* [ ] Add `gitmate rebase` and `gitmate branch`.
+* [ ] Introduce **Explain Mode** (`--explain`) for deeper learning.
+* [ ] Add **Safe Mode** (`--dry`) for simulations.
+* [ ] Team feedback → refine UX & add more workflows.
+
+## **6. Contributing**
+
+Feedback, issues, or suggestions are welcome — GitMate’s meant to grow with how *real people* use Git.
+Open a PR or start a discussion.
